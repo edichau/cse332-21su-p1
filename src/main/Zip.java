@@ -9,6 +9,12 @@ import java.io.IOException;
 import cse332.jazzlib.ZipEntry;
 import cse332.jazzlib.ZipOutputStream;
 
+/*
+ * The Zip program requires a working SuffixTrie implementation. If you haven't
+ * completed SuffixTrie, you will need to delete/move/rename SuffixTrie.java in
+ * order for Eclipse to pick up and use the provided JAR file.
+ */
+
 public class Zip {
 
     /** Larger -> better compression ratio, slower runtime **/
