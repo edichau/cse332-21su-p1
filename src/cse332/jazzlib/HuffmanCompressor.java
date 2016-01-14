@@ -107,7 +107,17 @@ public class HuffmanCompressor
             }
 
             public int compareTo(Node other) {
-                return this.freq - other.freq;
+                int result = this.freq - other.freq;
+                if (result != 0) {
+                    return result;
+                }
+                if (this.value == null) {
+                    return 1;
+                }
+                else if (other.value == null) {
+                    return -1;
+                }
+                return this.value.compareTo(other.value);
             }
         }
         void reset() {
