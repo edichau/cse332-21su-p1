@@ -51,9 +51,9 @@ public class SuffixTrie extends HashTrieMap<Byte, ByteString, Boolean> {
      * Then, the longest match is "abc", but this isn't a complete word in the trie.
      * There is definitely a match; it's just a partial one.
      *
-     * Regardless if you found a complete match or a partial match, you should return
-     * the total number of bytes you've matched against the buffer.
-     *                     
+     * If you find a COMPLETE match, you should return the total number of bytes you've
+     * matched against the buffer. Otherwise, you should return zero.
+     *
      * When implementing this method, you should start by resetting this.lastMatchedNode,
      * then start traversing from the root of the trie to try finding the new match. You
      * should not traverse starting from the old value of this.lastMatchedNode.  Make sure
