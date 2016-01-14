@@ -118,7 +118,8 @@ public class SuffixTrie extends HashTrieMap<Byte, ByteString, Boolean> {
      * Adds the given byte to this.currentMatch. This method should
      * NOT change this.lastMatchedNode.
      *
-     * @precondition this.currentMatch.isFull() == false
+     * If the client tries adding a byte after this.currentMatch is full,
+     * you should do nothing.
      *
      * @param b the byte to add
      */
