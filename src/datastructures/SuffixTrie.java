@@ -32,8 +32,7 @@ public class SuffixTrie extends HashTrieMap<Byte, ByteString, Boolean> {
      * To do this, we gradually shift elements from buffer to match as we 
      * determine that they are actually a match to a suffix in the trie.
      * 
-     * @postcondition pre(buffer) + pre(currentMatch) == post(buffer) + post(currentMatch)
-     * @postcondition currentMatch == suffix + b for the longest possible _partial_ 
+     * @postcondition currentMatch == suffix + b for the longest possible _partial_
      *                suffix in the trie and some single byte b 
      * @postcondition the node representing the last matched character in the trie
      *                is stored in this.lastMatchedNode (we might need this later)
@@ -155,15 +154,12 @@ public class SuffixTrie extends HashTrieMap<Byte, ByteString, Boolean> {
      *
      * 1. If the contents of the suffixtrie are at full capacity,
      *    shift off a byte and remove the whole word from the trie
-     * 2. Append b to the end of every stored node.
+     * 2. Append b to the end of every stored node
      * 3. Re-insert the empty string back into the trie
      *
      * HINT: be sure to pay careful attention to how exactly you are updating
      * your various fields, and how exactly they interact with one another. See the
      * example and descriptions in the spec for more details about this method.
-     *
-     * @postcondition currentMatch.hasWork() == false
-     * @postcondition pre(current contents) + pre(currentMatch) == (shifted off) + post(current contents) + post(currentMatch)
      */
     public void advance() {
         throw new NotYetImplementedException();
