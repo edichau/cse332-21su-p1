@@ -203,7 +203,11 @@ public abstract class TrieMap<A, K extends BString<A>, V> extends Dictionary<K, 
     }
 
     public String toString() {
-        return this.root.toString();
+        if (this.root == null) {
+            return "null";
+        } else {
+            return this.root.toString();
+        }
     }
 
 }
