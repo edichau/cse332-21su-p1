@@ -608,10 +608,11 @@ public class HuffmanCompressor
 
     public boolean tallyDist(int dist, int len) 
     {
-        if (DeflaterConstants.DEBUGGING)
+        if (DeflaterConstants.DEBUGGING) {
+            System.err.println("[" + dist + ", " + len + "]");
+        }
 
-
-            d_buf[last_lit] = (short) dist;
+        d_buf[last_lit] = (short) dist;
         l_buf[last_lit++] = (byte) (len - 3);
 
         int lc = l_code(len-3);
