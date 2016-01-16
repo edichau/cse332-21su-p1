@@ -37,7 +37,10 @@
 
 package cse332.jazzlib;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import cse332.interfaces.worklists.PriorityWorkList;
 import cse332.types.BitString;
@@ -51,7 +54,7 @@ import datastructures.worklists.MinFourHeap;
  * to the split of deflate and setInput.
  *
  * @author Jochen Hoenicke
- * @date Jan 6, 2000 
+ * @date Jan 6, 2000
  */
 public class HuffmanCompressor
 {
@@ -64,10 +67,10 @@ public class HuffmanCompressor
     private static final int REP_11_138 = 18;
     private static final int EOF_SYMBOL = 256;
     private static final int[] BL_ORDER =
-    { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
+            { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 
     private final static String bit4Reverse =
-        "\000\010\004\014\002\012\006\016\001\011\005\015\003\013\007\017";
+            "\000\010\004\014\002\012\006\016\001\011\005\015\003\013\007\017";
 
     class Tree extends HashTrieMap<Boolean, BitString, Integer>{
         short[] freqs;
@@ -86,18 +89,48 @@ public class HuffmanCompressor
             bl_counts = new int[maxLength];
         }
 
+        @SuppressWarnings("unchecked")
+        public int getOverflow() {
+            return getOverflow(0, (HashTrieNode)this.root);
+        }
+
+        private int getOverflow(int height, HashTrieNode node) {
+            if (node == null) {
+                return 0;
+            }
+
+            if (node.pointers.size() == 0) {
+                return 0;
+            }
+
+            int result = 0;
+            if (node.pointers.containsKey(true)) {
+                if (height + 1 > this.maxLength) {
+                    result++;
+                }
+                result += getOverflow(height + 1, node.pointers.get(false));
+                result += getOverflow(height + 1, node.pointers.get(true));
+            }
+            return result;
+        }
+
         class Node extends HashTrieNode implements Comparable<Node> {
             int freq;
+            int size;
+            int height;
 
             public Node(int value, int freq) {
                 this(null, null);
                 this.freq = freq;
                 this.value = value;
+                this.size = 1;
             }
 
             public Node(Node zero, Node one) {
                 this.freq = (zero != null ? zero.freq : 0) + (one != null ? one.freq : 0);
                 this.pointers = new HashMap<Boolean, HashTrieNode>(2);
+                this.size = (zero != null ? zero.size : 0) + (one != null ? one.size : 0) + 1;
+
                 if (zero != null) {
                     this.pointers.put(false, zero);
                 }
@@ -107,19 +140,10 @@ public class HuffmanCompressor
             }
 
             public int compareTo(Node other) {
-                int result = this.freq - other.freq;
-                if (result != 0) {
-                    return result;
-                }
-                if (this.value == null) {
-                    return 1;
-                }
-                else if (other.value == null) {
-                    return -1;
-                }
-                return this.value.compareTo(other.value);
+                return this.freq - other.freq;
             }
         }
+
         void reset() {
             for (int i = 0; i < freqs.length; i++)
                 freqs[i] = 0;
@@ -161,9 +185,54 @@ public class HuffmanCompressor
             for (int i = 0; i < maxLength; i++)
                 bl_counts[i] = 0;
 
+            int overflow = this.getOverflow();
+
+            List<BitString> tree = new ArrayList<>(this.size());
+
+
             for (BitString k : this) {
-                bl_counts[k.size() - 1]++;
+                tree.add(k);
+            }
+
+            for (BitString k : tree) {
+                bl_counts[Math.min(k.size() - 1, maxLength - 1)]++;
                 length[this.find(k)] = (byte) k.size();
+                if (k.size() > maxLength) {
+                    //overflow++;
+                }
+            }
+
+            if (overflow != 0) {
+                int incrBitLen = maxLength - 1;
+                do {
+                    while (bl_counts[--incrBitLen] == 0);
+
+                    do {
+                        bl_counts[incrBitLen]--;
+                        bl_counts[++incrBitLen]++;
+                        overflow -= 1 << (maxLength - 1 - incrBitLen);
+                    } while ((overflow > 0) && (incrBitLen < (maxLength - 1)));
+                } while (overflow > 0);
+
+    			/*
+    			 * We may have overshot above. Move some nodes from maxLength to
+    			 * maxLength-1 in that case.
+    			 */
+                bl_counts[maxLength - 1] += overflow;
+                bl_counts[maxLength - 2] -= overflow;
+
+                Collections.sort(tree, (x, y) -> x.size() - y.size());
+
+                int pointer = -1;
+                int remaining = 0;
+                for (BitString k : tree) {
+                    while (remaining == 0) {
+                        pointer++;
+                        remaining = bl_counts[pointer];
+                    }
+                    length[this.find(k)] = (byte) (pointer + 1);
+                    remaining--;
+                }
             }
         }
 
@@ -172,11 +241,17 @@ public class HuffmanCompressor
             int code = 0;
             codes = new short[freqs.length];
 
-            for (int bits = 0; bits < maxLength; bits++) 
+            for (int bits = 0; bits < maxLength; bits++)
             {
-                nextCode[bits] = code;
+                nextCode[bits] = (int)code;
                 code += bl_counts[bits] << (15 - bits);
             }
+
+            /*
+            if (DeflaterConstants.DEBUGGING && code != 65536) {
+            	throw new RuntimeException("Inconsistent bl_counts:");
+            }
+            */
 
             for (int i=0; i < numCodes; i++)
             {
@@ -190,7 +265,7 @@ public class HuffmanCompressor
         }
 
 
-        void buildTree() 
+        void buildTree()
         {
             int numSymbols = freqs.length;
 
@@ -225,12 +300,13 @@ public class HuffmanCompressor
 
             if (heap.size() > 0) {
                 this.root = heap.next();
+                this.size = ((Node)this.root).size;
             }
 
             buildLength();
         }
 
-        int getEncodedLength() 
+        int getEncodedLength()
         {
             int len = 0;
             for (int i = 0; i < freqs.length; i++)
@@ -249,7 +325,7 @@ public class HuffmanCompressor
             {
                 count = 1;
                 int nextlen = length[i];
-                if (nextlen == 0) 
+                if (nextlen == 0)
                 {
                     max_count = 138;
                     min_count = 3;
@@ -297,7 +373,7 @@ public class HuffmanCompressor
             {
                 count = 1;
                 int nextlen = length[i];
-                if (nextlen == 0) 
+                if (nextlen == 0)
                 {
                     max_count = 138;
                     min_count = 3;
@@ -403,7 +479,7 @@ public class HuffmanCompressor
         }
     }
 
-    public HuffmanCompressor(DeflaterPending pending) 
+    public HuffmanCompressor(DeflaterPending pending)
     {
         this.pending = pending;
 
@@ -462,7 +538,7 @@ public class HuffmanCompressor
     }
 
     public void compressBlock() {
-        for (int i = 0; i < last_lit; i++) 
+        for (int i = 0; i < last_lit; i++)
         {
             int litlen = l_buf[i] & 0xff;
             int dist = d_buf[i];
@@ -507,9 +583,9 @@ public class HuffmanCompressor
         }
     }
 
-    public void flushStoredBlock(byte[] stored, 
-            int stored_offset, int stored_len,
-            boolean lastBlock) {
+    public void flushStoredBlock(byte[] stored,
+                                 int stored_offset, int stored_len,
+                                 boolean lastBlock) {
         if (DeflaterConstants.DEBUGGING)
             System.err.println("Flushing stored block "+ stored_len);
         pending.writeBits((DeflaterConstants.STORED_BLOCK << 1)
@@ -522,7 +598,7 @@ public class HuffmanCompressor
     }
 
     public void flushBlock(byte[] stored, int stored_offset, int stored_len,
-            boolean lastBlock) {
+                           boolean lastBlock) {
         literalTree.freqs[EOF_SYMBOL]++;
 
         /* Build trees */
@@ -543,8 +619,8 @@ public class HuffmanCompressor
                 blTreeCodes = i+1;
         }
         int opt_len = 14 + blTreeCodes * 3 + blTree.getEncodedLength()
-            + literalTree.getEncodedLength() + distTree.getEncodedLength()
-            + extra_bits;
+                + literalTree.getEncodedLength() + distTree.getEncodedLength()
+                + extra_bits;
 
         int static_len = extra_bits;
         for (int i = 0; i < LITERAL_NUM; i++)
@@ -591,7 +667,7 @@ public class HuffmanCompressor
         return last_lit == BUFSIZE;
     }
 
-    public boolean tallyLit(int lit) 
+    public boolean tallyLit(int lit)
     {
         if (DeflaterConstants.DEBUGGING)
         {
@@ -606,11 +682,10 @@ public class HuffmanCompressor
         return last_lit == BUFSIZE;
     }
 
-    public boolean tallyDist(int dist, int len) 
+    public boolean tallyDist(int dist, int len)
     {
-        if (DeflaterConstants.DEBUGGING) {
+        if (DeflaterConstants.DEBUGGING)
             System.err.println("[" + dist + ", " + len + "]");
-        }
 
         d_buf[last_lit] = (short) dist;
         l_buf[last_lit++] = (byte) (len - 3);
