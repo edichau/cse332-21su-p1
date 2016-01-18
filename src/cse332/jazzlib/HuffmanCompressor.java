@@ -79,7 +79,6 @@ public class HuffmanCompressor
         int[]   bl_counts;
         int     minNumCodes, numCodes;
         int     maxLength;
-        boolean single;
 
         Tree(int elems, int minCodes, int maxLength) {
             super(BitString.class);
@@ -272,14 +271,6 @@ public class HuffmanCompressor
                 Node real = heap.next();
                 heap.add(new Node(null, real));
             }
-            /*
-            while (heap.size() < 2) {
-          	  	int node = maxCode < 2 ? ++maxCode : 0;
-          	  	Node n = new Node(0, node);
-                heap.add(n);
-                maxCode++;
-            }
-            */
 
             numCodes = Math.max(maxCode + 1, minNumCodes);
 
