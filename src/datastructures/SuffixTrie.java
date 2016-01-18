@@ -107,7 +107,7 @@ public class SuffixTrie extends HashTrieMap<Byte, ByteString, Boolean> {
         // changes to this method.
         int numMatches = 0;
         while (buffer.hasWork() && 
-               this.currentMatch.size() <= this.currentMatch.capacity() - 1 && 
+               this.currentMatch.size() < this.currentMatch.capacity() - 1 && 
                this.currentMatch.peek(numMatches) == buffer.peek()) {
             this.currentMatch.add(buffer.next());
             numMatches += 1;

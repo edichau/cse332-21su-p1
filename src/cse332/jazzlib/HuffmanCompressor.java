@@ -79,6 +79,7 @@ public class HuffmanCompressor
         int[]   bl_counts;
         int     minNumCodes, numCodes;
         int     maxLength;
+        boolean single;
 
         Tree(int elems, int minCodes, int maxLength) {
             super(BitString.class);
@@ -89,12 +90,11 @@ public class HuffmanCompressor
             bl_counts = new int[maxLength];
         }
 
-        @SuppressWarnings("unchecked")
         public int getOverflow() {
-            return getOverflow(0, (HashTrieNode)this.root);
+            return getOverflow(0, (Node)this.root);
         }
 
-        private int getOverflow(int height, HashTrieNode node) {
+        private int getOverflow(int height, Node node) {
             if (node == null) {
                 return 0;
             }
@@ -108,8 +108,8 @@ public class HuffmanCompressor
                 if (height + 1 > this.maxLength) {
                     result++;
                 }
-                result += getOverflow(height + 1, node.pointers.get(false));
-                result += getOverflow(height + 1, node.pointers.get(true));
+                result += getOverflow(height + 1, (Node)node.pointers.get(false));
+                result += getOverflow(height + 1, (Node)node.pointers.get(true));
             }
             return result;
         }
@@ -143,7 +143,6 @@ public class HuffmanCompressor
                 return this.freq - other.freq;
             }
         }
-
         void reset() {
             for (int i = 0; i < freqs.length; i++)
                 freqs[i] = 0;
@@ -195,11 +194,9 @@ public class HuffmanCompressor
             }
 
             for (BitString k : tree) {
-                bl_counts[Math.min(k.size() - 1, maxLength - 1)]++;
-                length[this.find(k)] = (byte) k.size();
-                if (k.size() > maxLength) {
-                    //overflow++;
-                }
+                int size = Math.min(k.size(), maxLength);
+                bl_counts[size - 1]++;
+                length[this.find(k)] = (byte)(size);
             }
 
             if (overflow != 0) {
@@ -230,7 +227,7 @@ public class HuffmanCompressor
                         pointer++;
                         remaining = bl_counts[pointer];
                     }
-                    length[this.find(k)] = (byte) (pointer + 1);
+                    length[this.find(k)] = (byte)(pointer + 1);
                     remaining--;
                 }
             }
@@ -241,23 +238,14 @@ public class HuffmanCompressor
             int code = 0;
             codes = new short[freqs.length];
 
-            for (int bits = 0; bits < maxLength; bits++)
-            {
+            for (int bits = 0; bits < maxLength; bits++) {
                 nextCode[bits] = (int)code;
                 code += bl_counts[bits] << (15 - bits);
             }
 
-            /*
-            if (DeflaterConstants.DEBUGGING && code != 65536) {
-            	throw new RuntimeException("Inconsistent bl_counts:");
-            }
-            */
-
-            for (int i=0; i < numCodes; i++)
-            {
+            for (int i = 0; i < length.length; i++) {
                 int bits = length[i];
-                if (bits > 0)
-                {
+                if (bits > 0) {
                     codes[i] = bitReverse(nextCode[bits-1]);
                     nextCode[bits-1] += 1 << (16 - bits);
                 }
@@ -265,8 +253,7 @@ public class HuffmanCompressor
         }
 
 
-        void buildTree()
-        {
+        void buildTree() {
             int numSymbols = freqs.length;
 
             int maxCode = 0;
@@ -281,13 +268,20 @@ public class HuffmanCompressor
                 }
             }
 
-            numCodes = Math.max(maxCode + 1, minNumCodes);
-
             if (heap.size() == 1) {
-                Node a = heap.next();
-                heap.add(new Node(a, null));
+                Node real = heap.next();
+                heap.add(new Node(null, real));
+            }
+            /*
+            while (heap.size() < 2) {
+          	  	int node = maxCode < 2 ? ++maxCode : 0;
+          	  	Node n = new Node(0, node);
+                heap.add(n);
                 maxCode++;
             }
+            */
+
+            numCodes = Math.max(maxCode + 1, minNumCodes);
 
             /* Construct the Huffman tree by repeatedly combining the least two
              * frequent nodes.
@@ -301,6 +295,10 @@ public class HuffmanCompressor
             if (heap.size() > 0) {
                 this.root = heap.next();
                 this.size = ((Node)this.root).size;
+            }
+            else {
+                this.root = null;
+                this.size = 0;
             }
 
             buildLength();
