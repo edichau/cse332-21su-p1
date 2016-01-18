@@ -8,6 +8,7 @@ import cse332.exceptions.NotYetImplementedException;
  * for method specifications.
  */
 public class MinFourHeap<E extends Comparable<E>> extends PriorityWorkList<E> {
+    /* Do not change the name of this field; the tests rely on it to work correctly. */
     private E[] data;
     
     public MinFourHeap() {
