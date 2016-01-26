@@ -12,7 +12,9 @@ public class BitString extends BString<Boolean> {
         super(s);
     }
 
-    public static Class<Boolean> getLetterType() { return Boolean.class; }
+    public static Class<Boolean> getLetterType() {
+        return Boolean.class;
+    }
 
     public short get() {
         short result = 0;
