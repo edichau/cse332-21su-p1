@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cse332.exceptions.NotYetImplementedException;
-import cse332.interfaces.trie.BString;
+import cse332.interfaces.misc.BString;
 import cse332.interfaces.trie.TrieMap;
 
 /**

@@ -1,6 +1,6 @@
 package cse332.types;
 
-import cse332.interfaces.trie.BString;
+import cse332.interfaces.misc.BString;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
 public class BitString extends BString<Boolean> {

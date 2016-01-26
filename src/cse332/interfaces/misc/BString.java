@@ -1,4 +1,4 @@
-package cse332.interfaces.trie;
+package cse332.interfaces.misc;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;

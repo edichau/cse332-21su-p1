@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import cse332.datastructures.containers.Item;
+import cse332.interfaces.misc.BString;
 import cse332.interfaces.misc.Dictionary;
 import cse332.interfaces.misc.SimpleIterator;
 import cse332.interfaces.worklists.LIFOWorkList;
