@@ -44,7 +44,7 @@ import java.util.List;
 
 import cse332.interfaces.worklists.PriorityWorkList;
 import cse332.types.BitString;
-import datastructures.HashTrieMap;
+import datastructures.dictionaries.HashTrieMap;
 import datastructures.worklists.MinFourHeap;
 
 /**

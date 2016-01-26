@@ -1,4 +1,4 @@
-package datastructures;
+package datastructures.dictionaries;
 
 import java.util.HashMap;
 import java.util.Iterator;
