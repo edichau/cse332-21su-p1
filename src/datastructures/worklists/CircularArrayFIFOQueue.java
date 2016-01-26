@@ -47,4 +47,22 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     public void clear() {
         throw new NotYetImplementedException();
     }
+
+    @Override
+    public int hashCode() {
+        // You will implement this method in p2. Leave this method unchanged for p1.
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // You will implement this method in p2. Leave this method unchanged for p1.
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public int compareTo(FixedSizeFIFOWorkList<E> o) {
+        // You will implement this method in p2. Leave this method unchanged for p1.
+        throw new NotYetImplementedException();
+    }
 }
