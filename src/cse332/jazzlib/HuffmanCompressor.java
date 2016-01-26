@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import cse332.datastructures.containers.Item;
 import cse332.interfaces.worklists.PriorityWorkList;
 import cse332.types.BitString;
 import datastructures.dictionaries.HashTrieMap;
@@ -188,8 +189,8 @@ public class HuffmanCompressor
             List<BitString> tree = new ArrayList<>(this.size());
 
 
-            for (BitString k : this) {
-                tree.add(k);
+            for (Item<BitString, Integer> k : this) {
+                tree.add(k.key);
             }
 
             for (BitString k : tree) {
