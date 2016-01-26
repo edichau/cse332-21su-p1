@@ -49,7 +49,7 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     }
 
     @Override
-    public int compareTo(FixedSizeFIFOWorkList<E> o) {
+    public int compareTo(FixedSizeFIFOWorkList<E> other) {
         // You will implement this method in p2. Leave this method unchanged for p1.
         throw new NotYetImplementedException();
     }
