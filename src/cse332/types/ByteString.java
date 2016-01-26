@@ -3,16 +3,16 @@ package cse332.types;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
-import cse332.interfaces.trie.BString;
+import cse332.interfaces.misc.BString;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
 public class ByteString extends BString<Byte> {
     public ByteString(String s) {
-        super(wrap(s.getBytes()));
+        super(BString.wrap(s.getBytes()));
     }
 
     public ByteString(byte[] s) {
-        super(wrap(s));
+        super(BString.wrap(s));
     }
 
     public ByteString(FixedSizeFIFOWorkList<Byte> q) {
@@ -23,8 +23,9 @@ public class ByteString extends BString<Byte> {
         super(s);
     }
 
-    
-    public static Class<Byte> getLetterType() { return Byte.class; }
+    public static Class<Byte> getLetterType() {
+        return Byte.class;
+    }
 
     public String toString() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();

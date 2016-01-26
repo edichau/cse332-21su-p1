@@ -1,6 +1,6 @@
 package cse332.types;
 
-import cse332.interfaces.trie.BString;
+import cse332.interfaces.misc.BString;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
 public class BitString extends BString<Boolean> {
@@ -12,7 +12,9 @@ public class BitString extends BString<Boolean> {
         super(s);
     }
 
-    public static Class<Boolean> getLetterType() { return Boolean.class; }
+    public static Class<Boolean> getLetterType() {
+        return Boolean.class;
+    }
 
     public short get() {
         short result = 0;

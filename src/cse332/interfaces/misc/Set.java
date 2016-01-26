@@ -2,12 +2,15 @@ package cse332.interfaces.misc;
 
 import java.util.Iterator;
 
+import cse332.datastructures.containers.Item;
+
 public abstract class Set<E> implements Iterable<E> {
     protected Dictionary<E, Boolean> map;
-    
+
     @SuppressWarnings("unused")
-    private Set(){}
-    
+    private Set() {
+    }
+
     protected Set(Dictionary<E, Boolean> backingMap) {
         this.map = backingMap;
     }
@@ -23,7 +26,7 @@ public abstract class Set<E> implements Iterable<E> {
     public final boolean contains(E e) {
         return this.map.find(e) != null;
     }
-    
+
     public final int size() {
         return this.map.size();
     }
@@ -31,15 +34,31 @@ public abstract class Set<E> implements Iterable<E> {
     public final boolean isEmpty() {
         return this.size() == 0;
     }
-    
+
+    @Override
     public Iterator<E> iterator() {
-        return this.map.iterator();
+        return new SetIterator();
     }
-    
+
+    private class SetIterator implements Iterator<E> {
+        private final Iterator<Item<E, Boolean>> mapIterator = Set.this.map.iterator();
+
+        @Override
+        public boolean hasNext() {
+            return this.mapIterator.hasNext();
+        }
+
+        @Override
+        public E next() {
+            return this.mapIterator.next().key;
+        }
+    }
+
     public void clear() {
         this.map.clear();
     }
-    
+
+    @Override
     public String toString() {
         return this.map.toString();
     }

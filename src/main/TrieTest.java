@@ -4,8 +4,8 @@ package main;
 import cse332.interfaces.trie.TrieMap;
 import cse332.interfaces.trie.TrieSet;
 import cse332.types.*;
-import datastructures.HashTrieMap;
-import datastructures.HashTrieSet;
+import datastructures.dictionaries.HashTrieMap;
+import datastructures.dictionaries.HashTrieSet;
 
 public class TrieTest {
     public static void main(String[] args) {
