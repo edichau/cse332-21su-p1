@@ -49,19 +49,32 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     }
 
     @Override
-    public int hashCode() {
-        // You will implement this method in p2. Leave this method unchanged for p1.
-        throw new NotYetImplementedException();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        // You will implement this method in p2. Leave this method unchanged for p1.
-        throw new NotYetImplementedException();
-    }
-
-    @Override
     public int compareTo(FixedSizeFIFOWorkList<E> o) {
+        // You will implement this method in p2. Leave this method unchanged for p1.
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object obj) {
+        // You will finish implementing this method in p2. Leave this method unchanged for p1.
+        if (this == obj) {
+            return true;
+        }
+        else if (!(obj instanceof FixedSizeFIFOWorkList<?>)) {
+            return false;
+        }
+        else {
+            FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj;
+
+            // Your code goes here
+
+            throw new NotYetImplementedException();
+        }
+    }
+
+    @Override
+    public int hashCode() {
         // You will implement this method in p2. Leave this method unchanged for p1.
         throw new NotYetImplementedException();
     }
