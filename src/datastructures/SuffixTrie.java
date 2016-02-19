@@ -33,8 +33,8 @@ public class SuffixTrie extends HashTrieMap<Byte, ByteString, Boolean> {
      * To do this, we gradually shift elements from buffer to match as we 
      * determine that they are actually a match to a suffix in the trie.
      * 
-     * @postcondition currentMatch == suffix + b for the longest possible _partial_
-     *                suffix in the trie and some single byte b 
+     * @postcondition currentMatch == suffix for the longest possible _partial_
+     *                suffix in the trie
      * @postcondition the node representing the last matched character in the trie
      *                is stored in this.lastMatchedNode (we might need this later)
      *
