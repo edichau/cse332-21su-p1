@@ -50,7 +50,7 @@ public abstract class WorkList<E> implements Iterable<E> {
      * Returns and removes the next element of the worklist
      *
      * @precondition hasWork() is true
-     * @postcondition return(next()) + after(next()) == before(next())
+     * @postcondition return(next()) ++ after(next()) == before(next())
      * @postcondition after(size()) + 1 == before(size())
      * @throws NoSuchElementException
      *             if hasWork() is false
