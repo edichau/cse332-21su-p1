@@ -3,7 +3,7 @@
 
 #### How Was Your Partnership? ####
 -   Did both partners do an equal amount of work?  If not, why not?
-    What happened?<pre>
+    If so, what did each person do? What happened?<pre>
 **TODO**: Answer this question
 </pre><br>
 
@@ -15,7 +15,7 @@
 **TODO**: Answer this question
 </pre><br>
 
--   Did you enjoy the project?<pre>
+-   Did you enjoy the project?  Why or why not?<pre>
 **TODO**: Answer this question
 </pre><br>
 
@@ -23,7 +23,8 @@
 
 #### WorkLists, Tries, and Zip ####
 -   The ADT for a WorkList explicitly forbids access to the middle elements.  However, the FixedSizeFIFOWorkList has a peek(i) method
-    which allows you to do exactly that.  Why is this an acceptable addition to the WorkList ADT in this particular case but not in general?<pre>
+    which allows you to do exactly that.  Why is this an acceptable addition to the WorkList ADT in this particular case but not in general?  
+    In other words, what about fixed size FIFO worklists makes peek(i) make sense?<pre>
 **TODO**: Answer this question
 </pre><br>
 -   As we've described it, a `TrieMap` seems like a general-purpose replacement for `HashMap` or `TreeMap`.  Why might we still want to use one
@@ -31,7 +32,7 @@
 **TODO**: Answer this question
 </pre><br>
 -   One of the applications of Tries is in solving Word Searches.  A "word search" is an n x m rectangle of letters.  The goal is to find all
-    of the possible words (horizontal, vertical, diagonal, etc.).  In Boggle, a similar game, any consecutive chain of letters (even repetitions)
+    of the possible words (horizontal, vertical, diagonal, etc.).  In Boggle, a similar game, any consecutive chain of letters
     are allowed.  Explain (in very high-level psuedo-code) how you might solve this problem with a TrieSet or a TrieMap.  Make sure to detail
     how a similar solution that uses a HashSet/HashMap instead would be different and why using a Trie might make the solution better.<pre>
 **TODO**: Answer this question
@@ -46,7 +47,7 @@
 </pre><br>
 -   Now that you've played with Zip, we want you to do an **experiment** with Zip.  Notice that there is a constant called `BUFFER_LENGTH` in `Zip.java`.
     Higher values of this constant makes the compression algorithm that Zip uses use more memory and consequently more time.  The "compression ratio"
-    of a file is the uncompressed size divided by the compressed size.  Compare time, space, type of input file, and compression ratio by running
+    of a file is the uncompressed size divided by the compressed size.  Compare time, type of input file, and compression ratio by running
     your code on various inputs.  We would like an in-depth analysis.  You should try at least one "book-like" file, at least one "website-like" file,
     and some other input of your choice.  We expect you to draw meaningful conclusions and possibly have graphs that convince us of your conclusions.
     This single question is worth almost as much as the implementation of `ArrayStack`; so, please take it seriously.  If you spend less than 20 minutes
