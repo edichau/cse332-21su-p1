@@ -33,7 +33,7 @@
 </pre><br>
 -   One of the applications of Tries is in solving Word Searches.  A "word search" is an n x m rectangle of letters.  The goal is to find all
     of the possible words (horizontal, vertical, diagonal, etc.).  In Boggle, a similar game, any consecutive chain of letters
-    are allowed.  Explain (in very high-level psuedo-code) how you might solve this problem with a TrieSet or a TrieMap.  Make sure to detail
+    are allowed.  Explain (in very high-level pseudo-code) how you might solve this problem with a TrieSet or a TrieMap.  Make sure to detail
     how a similar solution that uses a HashSet/HashMap instead would be different and why using a Trie might make the solution better.<pre>
 **TODO**: Answer this question
 </pre><br>
