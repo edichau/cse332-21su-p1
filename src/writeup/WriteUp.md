@@ -24,7 +24,7 @@
 #### WorkLists, Tries, and Zip ####
 -   The ADT for a WorkList explicitly forbids access to the middle elements.  However, the FixedSizeFIFOWorkList has a peek(i) method
     which allows you to do exactly that.  Why is this an acceptable addition to the WorkList ADT in this particular case but not in general?  
-    In other words, what about fixed size FIFO worklists makes peek(i) make sense?<pre>
+    In other words, what about fixed size FIFO worklists makes peek(i) make sense? Why does peek(i) NOT make sense in other worklist implementations?<pre>
 **TODO**: Answer this question
 </pre><br>
 -   As we've described it, a `TrieMap` seems like a general-purpose replacement for `HashMap` or `TreeMap`.  Why might we still want to use one
@@ -49,7 +49,8 @@
     Higher values of this constant makes the compression algorithm that Zip uses use more memory and consequently more time.  The "compression ratio"
     of a file is the uncompressed size divided by the compressed size.  Compare time, type of input file, and compression ratio by running
     your code on various inputs.  We would like an in-depth analysis.  You should try at least one "book-like" file, at least one "website-like" file,
-    and some other input of your choice.  We expect you to draw meaningful conclusions and possibly have graphs that convince us of your conclusions.
+    and some other input of your choice.  We expect you to draw meaningful conclusions and possibly have graphs that convince us of your conclusions. 
+    Say something about WHY you think you may have gotten the results you did.
     This single question is worth almost as much as the implementation of `ArrayStack`; so, please take it seriously.  If you spend less than 20 minutes
     on this question, there is no conceivable way that you answered this question in the way we were intending.<pre>
 **TODO**: Answer this question

@@ -63,7 +63,7 @@ public abstract class TrieMap<A extends Comparable<A>, K extends BString<A>, V> 
      * @return <tt>true</tt> if this map contains a mapping whose key starts
      *         with the specified key prefix.
      * @throws IllegalArgumentException
-     *             if either key is null.
+     *             if the key is null.
      */
     public abstract boolean findPrefix(K keyPrefix);
 
