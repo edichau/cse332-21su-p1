@@ -8,7 +8,7 @@ public abstract class Set<E> implements Iterable<E> {
     protected Dictionary<E, Boolean> map;
 
     @SuppressWarnings("unused")
-    private Set() {
+    protected Set() {
     }
 
     protected Set(Dictionary<E, Boolean> backingMap) {

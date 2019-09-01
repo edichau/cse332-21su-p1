@@ -8,6 +8,10 @@ public abstract class TrieSet<A extends Comparable<A>, E extends BString<A>> ext
         super(backingMap);
     }
 
+    protected TrieSet() {
+        super();
+    }
+
     @SuppressWarnings("unchecked")
     public final boolean findPrefix(E e) {
         return ((TrieMap<A, E, Boolean>) this.map).findPrefix(e);
