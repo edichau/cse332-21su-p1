@@ -65,7 +65,8 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
             return false;
         }
         else {
-            FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj;
+            // Uncomment the line below for p2 when you implement compareTo
+            // FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj;
 
             // Your code goes here
 
