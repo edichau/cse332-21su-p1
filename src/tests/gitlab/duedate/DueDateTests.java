@@ -1,16 +1,13 @@
 package tests.gitlab.duedate;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import tests.GradingUtility;
-import tests.gitlab.ckpt1.MinFourHeapTests;
+@RunWith(Suite.class)
 
-public class DueDateTests extends GradingUtility {
-    public static void main(String[] args) {
-        new DueDateTests();
-    }
+@Suite.SuiteClasses({
+        MinFourHeapTests.class,
+        HashTrieMapTests.class
+})
+public class DueDateTests {
 
-    protected Class<?>[] getTests() {
-        return new Class<?>[] {
-                MinFourHeapTests.class, HashTrieMapTests.class
-        };
-    }
 }

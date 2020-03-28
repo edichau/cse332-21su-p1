@@ -1,85 +1,65 @@
 package tests.gitlab.ckpt1;
 
 import cse332.interfaces.worklists.WorkList;
-import tests.TestsUtility;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
 
-public abstract class WorklistGradingTests extends TestsUtility {
+public abstract class WorklistGradingTests {
     protected static WorkList<String> STUDENT_STR;
     protected static WorkList<Double> STUDENT_DOUBLE;
     protected static WorkList<Integer> STUDENT_INT;
 
-    // DEFAULT LIST OF TESTS
-
-    @Override
-    protected void run() {
-        SHOW_TESTS = true;
-	    PRINT_TESTERR = true;
-	    DEBUG = true;
-
-        test("testHasWork");
-        test("testHasWorkAfterAdd");
-        test("testHasWorkAfterAddRemove");
-        test("testPeekHasException");
-        test("testNextHasException");
-        test("testClear");
-        test("checkStructure");
+    @Test
+    public void testHasWork() {
+        assertFalse(STUDENT_INT.hasWork());
     }
 
-    // DEFAULT TESTS
-
-    public static int testHasWork() {
-        return STUDENT_INT.hasWork() ? 0 : 1;
-    }
-
-    public static int testHasWorkAfterAdd() {
+    @Test
+    public void testHasWorkAfterAdd() {
         STUDENT_INT.add(1);
-        return STUDENT_INT.hasWork() ? 1 : 0;
+        assertTrue(STUDENT_INT.hasWork());
     }
 
-    public static int testHasWorkAfterAddRemove() {
+    @Test
+    public void testHasWorkAfterAddRemove() {
         for (int i = 0; i < 1000; i++) {
             STUDENT_DOUBLE.add(Math.random());
         }
         for (int i = 0; i < 1000; i++) {
             STUDENT_DOUBLE.next();
         }
-        return STUDENT_DOUBLE.hasWork() ? 0 : 1;
+        assertFalse(STUDENT_DOUBLE.hasWork());
     }
-
-    public static int testPeekHasException() {
-        boolean initiallyThrowsException = doesPeekThrowException(STUDENT_INT);
+    @Test
+    public void testPeekHasException() {
+        assertTrue(doesPeekThrowException(STUDENT_INT));
 
         addAndRemove(STUDENT_INT, 42, 10);
-        boolean throwsExceptionAfterUsage = doesPeekThrowException(STUDENT_INT);
-
-        return (initiallyThrowsException && throwsExceptionAfterUsage) ? 1 : 0;
+        assertTrue(doesPeekThrowException(STUDENT_INT));
     }
 
-    public static int testNextHasException() {
-        boolean initiallyThrowsException = doesNextThrowException(STUDENT_INT);
+    @Test
+    public void testNextHasException() {
+        assertTrue(doesNextThrowException(STUDENT_INT));
 
         addAndRemove(STUDENT_INT, 42, 10);
-        boolean throwsExceptionAfterUsage = doesNextThrowException(STUDENT_INT);
-
-        return (initiallyThrowsException && throwsExceptionAfterUsage) ? 1 : 0;
+        assertTrue(doesNextThrowException(STUDENT_INT));
     }
-
-    public static int testClear() {
+    @Test
+    public void testClear() {
         addAll(STUDENT_STR, new String[]{"Beware", "the", "Jabberwock", "my", "son!"});
 
-        if (!STUDENT_STR.hasWork() || (STUDENT_STR.size() != 5)) {
-            return 0;
-        }
+        assertTrue(STUDENT_STR.hasWork());
+        assertTrue(STUDENT_STR.size() == 5);
 
         STUDENT_STR.clear();
-        boolean result = !STUDENT_STR.hasWork()
-                && STUDENT_STR.size() == 0
-                && doesPeekThrowException(STUDENT_STR)
-                && doesNextThrowException(STUDENT_STR);
-
-        return result ? 1 : 0;
+        assertFalse(STUDENT_STR.hasWork());
+        assertTrue(STUDENT_STR.size() == 0);
+        assertTrue(doesPeekThrowException(STUDENT_STR));
+        assertTrue(doesNextThrowException(STUDENT_STR));
     }
 
     // UTILITY METHODS

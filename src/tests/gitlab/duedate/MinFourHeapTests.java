@@ -1,35 +1,29 @@
-package tests.gitlab.ckpt1;
+package tests.gitlab.duedate;
 
 import cse332.interfaces.worklists.PriorityWorkList;
 import datastructures.worklists.MinFourHeap;
+import org.junit.Before;
+import org.junit.Test;
+import tests.gitlab.ckpt1.WorklistGradingTests;
 
+import static org.junit.Assert.*;
+
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class MinFourHeapTests extends WorklistGradingTests {
     private static Random RAND;
 
-    public static void main(String[] args) {
-        new MinFourHeapTests().run();
-    }
-
-    @Override
-    protected void run() {
-        super.run();
-        test("testHeapWith5Items");
-        test("testHugeHeap");
-        test("testOrderingDoesNotMatter");
-        test("testWithCustomComparable");
-        finish();
-    }
-
-    public static void init() {
+    @Before
+    public void init() {
         STUDENT_STR = new MinFourHeap<>();
         STUDENT_DOUBLE = new MinFourHeap<>();
         STUDENT_INT = new MinFourHeap<>();
         RAND = new Random(42);
     }
 
-    public static int testHeapWith5Items() {
+    @Test
+    public void testHeapWith5Items() {
         PriorityWorkList<String> heap = new MinFourHeap<>();
         String[] tests = { "a", "b", "c", "d", "e" };
         for (int i = 0; i < 5; i++) {
@@ -37,17 +31,15 @@ public class MinFourHeapTests extends WorklistGradingTests {
             heap.add(str);
         }
 
-        boolean passed = true;
         for (int i = 0; i < 5; i++) {
             String str_heap = heap.next();
             String str = (char) ('a' + i) + "a";
-            passed &= str.equals(str_heap);
+            assertTrue(str.equals(str_heap));
         }
-
-        return passed ? 1 : 0;
     }
 
-    public static int testOrderingDoesNotMatter() {
+    @Test
+    public void testOrderingDoesNotMatter() {
         PriorityWorkList<String> ordered = new MinFourHeap<>();
         PriorityWorkList<String> reversed = new MinFourHeap<>();
         PriorityWorkList<String> random = new MinFourHeap<>();
@@ -56,11 +48,9 @@ public class MinFourHeapTests extends WorklistGradingTests {
         addAll(reversed, new String[]{"e", "d", "c", "b", "a"});
         addAll(random, new String[]{"d", "b", "c", "e", "a"});
 
-        if (!isSame("a", ordered.peek(), reversed.peek(), random.peek()) ||
-                !isSame("a", ordered.next(), reversed.next(), random.next()) ||
-                !isSame("b", ordered.next(), reversed.next(), random.next())) {
-            return 0;
-        }
+        assertTrue(isSame("a", ordered.peek(), reversed.peek(), random.peek()));
+        assertTrue(isSame("a", ordered.next(), reversed.next(), random.next()));
+        assertTrue(isSame("b", ordered.next(), reversed.next(), random.next()));
 
         addAll(ordered, new String[] {"a", "a", "b", "c", "z"});
         addAll(reversed, new String[] {"z", "c", "b", "a", "a"});
@@ -68,16 +58,12 @@ public class MinFourHeapTests extends WorklistGradingTests {
 
         String[] expected = new String[] {"a", "a", "b", "c", "c", "d", "e", "z"};
         for (String e : expected) {
-            if (!isSame(e, ordered.peek(), reversed.peek(), random.peek()) ||
-                    !isSame(e, ordered.next(), reversed.next(), random.next())) {
-                return 0;
-            }
+            assertTrue(isSame(e, ordered.peek(), reversed.peek(), random.peek()));
+            assertTrue(isSame(e, ordered.next(), reversed.next(), random.next()));
         }
-
-        return 1;
     }
 
-    private static boolean isSame(String... args) {
+    private boolean isSame(String... args) {
         String first = args[0];
         for (String arg : args) {
             if (!first.equals(arg)) {
@@ -87,7 +73,8 @@ public class MinFourHeapTests extends WorklistGradingTests {
         return true;
     }
 
-    public static int testHugeHeap() {
+    @Test
+    public void testHugeHeap() {
         PriorityWorkList<String> heap = new MinFourHeap<>();
         int n = 10000;
 
@@ -96,18 +83,15 @@ public class MinFourHeapTests extends WorklistGradingTests {
             String str = String.format("%05d", i * 37 % n);
             heap.add(str);
         }
-
         // Delete them all
-        boolean passed = true;
         for (int i = 0; i < n; i++) {
             String s = heap.next();
-            passed &= i == Integer.parseInt(s);
+            assertTrue(i == Integer.parseInt(s));
         }
-
-        return passed ? 1 : 0;
     }
 
-    public static int testWithCustomComparable() {
+    @Test
+    public void testWithCustomComparable() {
         PriorityWorkList<Coordinate> student = new MinFourHeap<>();
         Queue<Coordinate> reference = new PriorityQueue<>();
 
@@ -116,18 +100,12 @@ public class MinFourHeapTests extends WorklistGradingTests {
             student.add(coord);
             reference.add(coord);
         }
-
-        if (student.size() != reference.size()) {
-            return 0;
-        }
+        assertTrue(student.size() == reference.size());
 
         while (!reference.isEmpty()) {
-            if (reference.peek() != student.peek() || reference.remove() != student.next()) {
-                return 0;
-            }
+            assertTrue(reference.peek() == student.peek());
+            assertTrue(reference.remove() == student.next());
         }
-
-        return 1;
     }
 
     public static class Coordinate implements Comparable<Coordinate> {
@@ -149,7 +127,8 @@ public class MinFourHeapTests extends WorklistGradingTests {
         }
     }
 
-    public static int checkStructure() {
+    @Test
+    public void checkStructure() {
         PriorityWorkList<Integer> heap = new MinFourHeap<>();
         addAll(heap, new Integer[] {10, 10, 15, 1, 17, 16, 100, 101, 102, 103, 105, 106, 107, 108});
 
@@ -165,6 +144,37 @@ public class MinFourHeapTests extends WorklistGradingTests {
         String heapStr2 = Arrays.toString(heapData2);
         String heapExp2 = "[15, 16, 103, 107, 17, 108, 100, 101, 102, 106, 105,";
 
-        return heapStr.contains(heapExp) && heapStr2.contains(heapExp2) ? 1 : 0;
+        assertTrue(heapStr.contains(heapExp));
+        assertTrue(heapStr2.contains(heapExp2));
+    }
+
+    protected <T> T getField(Object o, String fieldName) {
+        try {
+            Field field = o.getClass().getSuperclass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            definalize(field);
+            Object f = field.get(o);
+            return (T) f;
+        } catch (Exception var6) {
+            try {
+                Field field = o.getClass().getDeclaredField(fieldName);
+                field.setAccessible(true);
+                definalize(field);
+                Object f = field.get(o);
+                return (T) f;
+            } catch (Exception var5) {
+                return null;
+            }
+        }
+    }
+
+    private void definalize(Field field) {
+        try {
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & -17);
+        } catch (Exception var2) {
+        }
+
     }
 }

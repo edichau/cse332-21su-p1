@@ -2,50 +2,38 @@ package tests.gitlab.ckpt1;
 
 import cse332.interfaces.worklists.WorkList;
 import datastructures.worklists.ArrayStack;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class ArrayStackTests extends WorklistGradingTests {
 
-    public static void main(String[] args) {
-        new ArrayStackTests().run();
-    }
-
-    public static void init() {
+    @Before
+    public void init() {
         STUDENT_STR = new ArrayStack<>();
         STUDENT_DOUBLE = new ArrayStack<>();
         STUDENT_INT = new ArrayStack<>();
     }
 
-    @Override
-    protected void run() {
-        super.run();
-        finish();
-    }
-
-    public static int checkStructure() {
+    @Test
+    public void checkStructure() {
         WorkList<Integer> stack = new ArrayStack<>();
 
         // Fill
         for (int i = 0; i < 1000; i++) {
             stack.add(i);
-            boolean peekWorks = (stack.peek() == i);
-            boolean hasWork = stack.hasWork();
-            boolean sizeIsCorrect = (stack.size() == (i + 1));
-            if (!peekWorks || !hasWork || !sizeIsCorrect) {
-                return 0;
-            }
+            assertTrue(stack.peek() == i);
+            assertTrue(stack.hasWork());
+            assertTrue(stack.size() == (i + 1));
         }
 
         // Empty
         for (int i = 999; i >= 0; i--) {
-            boolean hasWorks = stack.hasWork();
-            boolean peekWorks = (stack.peek() == i);
-            boolean nextWorks = (stack.next() == i);
-            boolean sizeIsCorrect = (stack.size() == i);
-            if (!hasWorks || !peekWorks || !nextWorks || !sizeIsCorrect) {
-                return 0;
-            }
+            assertTrue(stack.hasWork());
+            assertTrue (stack.peek() == i);
+            assertTrue (stack.next() == i);
+            assertTrue (stack.size() == i);
         }
-
-        return 1;
     }
 }
