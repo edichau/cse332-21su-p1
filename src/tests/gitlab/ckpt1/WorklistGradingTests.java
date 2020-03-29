@@ -12,18 +12,18 @@ public abstract class WorklistGradingTests {
     protected static WorkList<Double> STUDENT_DOUBLE;
     protected static WorkList<Integer> STUDENT_INT;
 
-    @Test
+    @Test(timeout = 3000)
     public void testHasWork() {
         assertFalse(STUDENT_INT.hasWork());
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testHasWorkAfterAdd() {
         STUDENT_INT.add(1);
         assertTrue(STUDENT_INT.hasWork());
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testHasWorkAfterAddRemove() {
         for (int i = 0; i < 1000; i++) {
             STUDENT_DOUBLE.add(Math.random());
@@ -33,7 +33,7 @@ public abstract class WorklistGradingTests {
         }
         assertFalse(STUDENT_DOUBLE.hasWork());
     }
-    @Test
+    @Test(timeout = 3000)
     public void testPeekHasException() {
         assertTrue(doesPeekThrowException(STUDENT_INT));
 
@@ -41,14 +41,14 @@ public abstract class WorklistGradingTests {
         assertTrue(doesPeekThrowException(STUDENT_INT));
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testNextHasException() {
         assertTrue(doesNextThrowException(STUDENT_INT));
 
         addAndRemove(STUDENT_INT, 42, 10);
         assertTrue(doesNextThrowException(STUDENT_INT));
     }
-    @Test
+    @Test(timeout = 3000)
     public void testClear() {
         addAll(STUDENT_STR, new String[]{"Beware", "the", "Jabberwock", "my", "son!"});
 

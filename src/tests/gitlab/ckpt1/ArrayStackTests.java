@@ -16,7 +16,7 @@ public class ArrayStackTests extends WorklistGradingTests {
         STUDENT_INT = new ArrayStack<>();
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void checkStructure() {
         WorkList<Integer> stack = new ArrayStack<>();
 

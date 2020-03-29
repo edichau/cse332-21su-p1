@@ -22,7 +22,7 @@ public class MinFourHeapTests extends WorklistGradingTests {
         RAND = new Random(42);
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testHeapWith5Items() {
         PriorityWorkList<String> heap = new MinFourHeap<>();
         String[] tests = { "a", "b", "c", "d", "e" };
@@ -38,7 +38,7 @@ public class MinFourHeapTests extends WorklistGradingTests {
         }
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testOrderingDoesNotMatter() {
         PriorityWorkList<String> ordered = new MinFourHeap<>();
         PriorityWorkList<String> reversed = new MinFourHeap<>();
@@ -73,7 +73,7 @@ public class MinFourHeapTests extends WorklistGradingTests {
         return true;
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testHugeHeap() {
         PriorityWorkList<String> heap = new MinFourHeap<>();
         int n = 10000;
@@ -90,7 +90,7 @@ public class MinFourHeapTests extends WorklistGradingTests {
         }
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testWithCustomComparable() {
         PriorityWorkList<Coordinate> student = new MinFourHeap<>();
         Queue<Coordinate> reference = new PriorityQueue<>();
@@ -127,7 +127,7 @@ public class MinFourHeapTests extends WorklistGradingTests {
         }
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void checkStructure() {
         PriorityWorkList<Integer> heap = new MinFourHeap<>();
         addAll(heap, new Integer[] {10, 10, 15, 1, 17, 16, 100, 101, 102, 103, 105, 106, 107, 108});

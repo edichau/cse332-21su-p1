@@ -18,7 +18,7 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
         STUDENT_INT = new CircularArrayFIFOQueue<>(100000);
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testClear() {
         FixedSizeFIFOWorkList<String> queue = new CircularArrayFIFOQueue<>(5);
         addAll(queue, new String[] {"Beware", "the", "Jabberwock", "my", "son!"});
@@ -37,7 +37,7 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
         assertTrue(doesNextThrowException(queue));
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testUpdate() {
         FixedSizeFIFOWorkList<Integer> queue = new CircularArrayFIFOQueue<>(10);
 
@@ -74,7 +74,7 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
         assertTrue(queue.size() == 0);
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void testCycle() {
         testCycle(1);
         testCycle(2);
@@ -104,7 +104,7 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
         }
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void checkStructure() {
         FixedSizeFIFOWorkList<Integer> queue = new CircularArrayFIFOQueue<>(1000);
 

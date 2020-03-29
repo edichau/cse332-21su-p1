@@ -16,7 +16,7 @@ public class ListFIFOQueueTests extends WorklistGradingTests {
         STUDENT_INT = new ListFIFOQueue<>();
     }
 
-    @Test
+    @Test(timeout = 3000)
     public void checkStructure() {
         WorkList<Integer> queue = new ListFIFOQueue<>();
 
