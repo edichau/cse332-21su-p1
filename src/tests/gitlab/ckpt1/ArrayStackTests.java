@@ -23,17 +23,17 @@ public class ArrayStackTests extends WorklistGradingTests {
         // Fill
         for (int i = 0; i < 1000; i++) {
             stack.add(i);
-            assertTrue(stack.peek() == i);
+            assertEquals(i, stack.peek().intValue());
             assertTrue(stack.hasWork());
-            assertTrue(stack.size() == (i + 1));
+            assertEquals((i + 1), stack.size());
         }
 
         // Empty
         for (int i = 999; i >= 0; i--) {
             assertTrue(stack.hasWork());
-            assertTrue (stack.peek() == i);
-            assertTrue (stack.next() == i);
-            assertTrue (stack.size() == i);
+            assertEquals (i, stack.peek().intValue());
+            assertEquals (i, stack.next().intValue());
+            assertEquals (i, stack.size());
         }
     }
 }

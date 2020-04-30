@@ -3,6 +3,7 @@ package tests.gitlab.ckpt1;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 import cse332.interfaces.worklists.WorkList;
 import datastructures.worklists.CircularArrayFIFOQueue;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,16 +24,16 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
         FixedSizeFIFOWorkList<String> queue = new CircularArrayFIFOQueue<>(5);
         addAll(queue, new String[] {"Beware", "the", "Jabberwock", "my", "son!"});
         assertTrue(queue.hasWork());
-        assertTrue(queue.size() == 5);
+        assertEquals(5, queue.size());
         assertTrue(queue.isFull());
-        assertTrue(queue.capacity() == 5);
+        assertEquals(5, queue.capacity());
 
         queue.clear();
 
         assertFalse(queue.hasWork());
-        assertTrue(queue.size() == 0);
+        assertEquals(0, queue.size());
         assertFalse(queue.isFull());
-        assertTrue(queue.capacity() == 5);
+        assertEquals(5, queue.capacity());
         assertTrue(doesPeekThrowException(queue));
         assertTrue(doesNextThrowException(queue));
     }
@@ -43,15 +44,15 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
 
         for (int i = 0; i < 8; i++) {
             queue.add(i);
-            assertTrue(queue.size() == i + 1);
+            assertEquals(i + 1, queue.size());
         }
 
         for (int i = 0; i < 8; i++) {
-            assertTrue(queue.peek(i) == i);
+            assertEquals(i, queue.peek(i).intValue());
         }
 
-        assertTrue(queue.size() == 8);
-        assertFalse(queue.size() != 8 && !queue.isFull());
+        assertEquals(8, queue.size());
+        assertFalse(queue.isFull());
 
         for (int i = 0; i < 8; i += 2) {
             queue.update(i, -i);
@@ -59,19 +60,19 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
 
         for (int i = 0; i < 8; i++) {
             int expected = i * ((i % 2 == 0) ? -1 : 1);
-            assertTrue(queue.peek(i) == expected);
+            assertEquals(expected, queue.peek(i).intValue());
 
         }
 
-        assertTrue(queue.size() == 8);
+        assertEquals(8, queue.size());
 
         for (int i = 0; i < 8; i++) {
             int expected = i * ((i % 2 == 0) ? -1 : 1);
-            assertTrue(queue.peek() == expected);
-            assertTrue(queue.next() == expected);
+            assertEquals(expected,  queue.peek().intValue());
+            assertEquals(expected, queue.next().intValue());
 
         }
-        assertTrue(queue.size() == 0);
+        assertEquals(0, queue.size());
     }
 
     @Test(timeout = 3000)
@@ -88,18 +89,18 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
 
         for (int i = 0; i < capacity; i++) {
             queue.add(i);
-            assertTrue(queue.size() == i + 1);
+            assertEquals(i + 1, queue.size());
         }
 
         assertTrue(queue.hasWork());
         assertTrue(queue.isFull());
 
         for (int i = capacity; i < 100000; i++) {
-            assertTrue(queue.peek() == (i - capacity));
-            assertTrue(queue.next() == (i - capacity));
-            assertTrue(!queue.isFull());
+            assertEquals((i - capacity), queue.peek().intValue());
+            assertEquals((i - capacity), queue.next().intValue());
+            assertFalse(queue.isFull());
             queue.add(i);
-            assertTrue(queue.size() == capacity);
+            assertEquals(capacity, queue.size());
             assertTrue(queue.isFull());
         }
     }
@@ -110,35 +111,37 @@ public class CircularArrayFIFOQueueTests extends WorklistGradingTests {
 
         // Fill
         for (int i = 0; i < 1000; i++) {
-            assertTrue(!queue.isFull());
+            assertFalse(queue.isFull());
             queue.add(i);
-            assertTrue(queue.peek() == 0 && queue.peek(0) == 0);
-            assertTrue(queue.peek(i) == i);
+            assertEquals(0, queue.peek().intValue());
+            assertEquals(0, queue.peek(0).intValue());
+            assertEquals(i, queue.peek(i).intValue());
             assertTrue(queue.hasWork());
-            assertTrue(queue.size() == (i + 1));
+            assertEquals((i + 1), queue.size());
         }
-        assertTrue(queue.size() == 1000);
+        assertEquals(1000, queue.size());
         assertTrue(queue.isFull());
 
         try {
             queue.add(2000);
-            assertTrue(false);
+            Assert.fail("Expected an IllegalStateException");
         } catch (IllegalStateException ex) {
             // Queue throws correct exception when full; move on
         }
 
         // Check peek
         for (int i = 0; i < 1000; i++) {
-            assertTrue(queue.peek(i) == i);
+            assertEquals(i, queue.peek(i).intValue());
         }
 
         // Empty
         for (int i = 0; i < 999; i++) {
             assertTrue(queue.hasWork());
-            assertTrue(queue.peek() == i && queue.peek(0) == i);
-            assertTrue(queue.next() == i);
-            assertTrue(queue.size() == 999 - i);
-            assertTrue(!queue.isFull());
+            assertEquals(i, queue.peek().intValue());
+            assertEquals(i, queue.peek(0).intValue());
+            assertEquals(i, queue.next().intValue());
+            assertEquals(999 - i, queue.size());
+            assertFalse(queue.isFull());
         }
     }
 }

@@ -37,16 +37,11 @@
 
 package cse332.jazzlib;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import cse332.datastructures.containers.Item;
-import cse332.interfaces.worklists.PriorityWorkList;
 import cse332.types.BitString;
 import datastructures.dictionaries.HashTrieMap;
-import datastructures.worklists.MinFourHeap;
 
 /**
  * This is the HuffmanCompressor class.
@@ -258,19 +253,19 @@ public class HuffmanCompressor
 
             int maxCode = 0;
 
-            PriorityWorkList<Node> heap = new MinFourHeap<Node>();
+            Queue<Node> queue = new PriorityQueue<Node>();
             for (int n = 0; n < numSymbols; n++) {
                 int freq = freqs[n];
                 if (freq != 0) {
                     /* Insert n into heap */
-                    heap.add(new Node(n, freq));
+                    queue.add(new Node(n, freq));
                     maxCode = n;
                 }
             }
 
-            if (heap.size() == 1) {
-                Node real = heap.next();
-                heap.add(new Node(null, real));
+            if (queue.size() == 1) {
+                Node real = queue.remove();
+                queue.add(new Node(null, real));
             }
 
             numCodes = Math.max(maxCode + 1, minNumCodes);
@@ -278,14 +273,14 @@ public class HuffmanCompressor
             /* Construct the Huffman tree by repeatedly combining the least two
              * frequent nodes.
              */
-            while (heap.size() > 1) {
-                Node a = heap.next();
-                Node b = heap.next();
-                heap.add(new Node(a, b));
+            while (queue.size() > 1) {
+                Node a = queue.remove();
+                Node b = queue.remove();
+                queue.add(new Node(a, b));
             }
 
-            if (heap.size() > 0) {
-                this.root = heap.next();
+            if (queue.size() > 0) {
+                this.root = queue.remove();
                 this.size = ((Node)this.root).size;
             }
             else {

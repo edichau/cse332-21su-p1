@@ -53,11 +53,11 @@ public abstract class WorklistGradingTests {
         addAll(STUDENT_STR, new String[]{"Beware", "the", "Jabberwock", "my", "son!"});
 
         assertTrue(STUDENT_STR.hasWork());
-        assertTrue(STUDENT_STR.size() == 5);
+        assertEquals(5, STUDENT_STR.size());
 
         STUDENT_STR.clear();
         assertFalse(STUDENT_STR.hasWork());
-        assertTrue(STUDENT_STR.size() == 0);
+        assertEquals(0, STUDENT_STR.size());
         assertTrue(doesPeekThrowException(STUDENT_STR));
         assertTrue(doesNextThrowException(STUDENT_STR));
     }

@@ -23,17 +23,17 @@ public class ListFIFOQueueTests extends WorklistGradingTests {
         // Fill
         for (int i = 0; i < 1000; i++) {
             queue.add(i);
-            assertTrue(queue.peek() == 0);
+            assertEquals(0, queue.peek().intValue());
             assertTrue(queue.hasWork());
-            assertTrue(queue.size() == (i + 1));
+            assertEquals((i + 1), queue.size());
         }
 
         // Empty
         for (int i = 0; i < 999; i++) {
             assertTrue(queue.hasWork());
-            assertTrue(queue.peek() == i);
-            assertTrue(queue.next() == i);
-            assertTrue(queue.size() == 999 - i);
+            assertEquals(i, queue.peek().intValue());
+            assertEquals(i, queue.next().intValue());
+            assertEquals(999 - i, queue.size());
         }
     }
 }
