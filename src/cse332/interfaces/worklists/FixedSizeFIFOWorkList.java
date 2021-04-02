@@ -18,8 +18,8 @@ public abstract class FixedSizeFIFOWorkList<E> extends FIFOWorkList<E>
     private final int capacity;
 
     public FixedSizeFIFOWorkList(int capacity) {
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("capacity should be positive");
+        if (capacity < 0) {
+            throw new IllegalArgumentException("capacity should be non-negative");
         }
         this.capacity = capacity;
     }
