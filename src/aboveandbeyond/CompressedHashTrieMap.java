@@ -1,7 +1,7 @@
 package aboveandbeyond;
 
 import cse332.exceptions.NotYetImplementedException;
-import cse332.interfaces.misc.BString;
+import cse332.types.BString;
 import cse332.interfaces.trie.TrieMap;
 
 import java.util.Iterator;
