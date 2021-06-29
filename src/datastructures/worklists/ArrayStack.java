@@ -51,9 +51,8 @@ public class ArrayStack<E> extends LIFOWorkList<E> {
         if (!super.hasWork()) {
             throw new NoSuchElementException();
         }
-        E work = workList[size - 1];
         size--;
-        return work;
+        return workList[size];
     }
 
     @Override
