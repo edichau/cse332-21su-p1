@@ -20,11 +20,9 @@ public class ArrayStack<E> extends LIFOWorkList<E> {
 
     @Override
     public void add(E work) {
-
         if(size == workList.length) { //out of space in workList
             //create new array double the size and copy values of current workList into newWorkList
             //since we double the size every time we run out of space, our amortized time to add ends up being O(1)
-
             int newArrayLength= workList.length * 2;
             E[] newWorkList = (E[]) new Object[newArrayLength];
             for(int i = 0; i < size; i++) {
@@ -40,7 +38,7 @@ public class ArrayStack<E> extends LIFOWorkList<E> {
 
     @Override
     public E peek() {
-        if (!super.hasWork()) {
+        if (!hasWork()) {
             throw new NoSuchElementException();
         }
         return workList[size - 1];
@@ -48,7 +46,7 @@ public class ArrayStack<E> extends LIFOWorkList<E> {
 
     @Override
     public E next() {
-        if (!super.hasWork()) {
+        if (!hasWork()) {
             throw new NoSuchElementException();
         }
         size--;
