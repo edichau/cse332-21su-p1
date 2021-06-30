@@ -24,34 +24,56 @@ public class ListFIFOQueue<E> extends FIFOWorkList<E> {
         }
     }
 
+    private Node front, back;
+    private int size;
+
     public ListFIFOQueue() {
-        Node front = null;
-        Node back = null;
-        int size = 0;
+        this.front = null;
+        this.back = null;
+        this.size = 0;
     }
 
     @Override
     public void add(E work) {
-        throw new NotYetImplementedException();
+        Node next = new Node(work);
+        if (this.front == null) {
+            this.front = next;
+            this.back = next;
+        } else {
+            this.back.next = next;
+            this.back = this.back.next;
+        }
+        this.size++;
     }
 
     @Override
     public E peek() {
-        throw new NotYetImplementedException();
+        if (!hasWork()) {
+            throw new NoSuchElementException();
+        }
+        return this.front.data;
     }
 
     @Override
     public E next() {
-        throw new NotYetImplementedException();
+        if (!hasWork()) {
+            throw new NoSuchElementException();
+        }
+        Node next = this.front;
+        this.front = this.front.next;
+        this.size--;
+        return next.data;
     }
 
     @Override
     public int size() {
-        throw new NotYetImplementedException();
+        return this.size;
     }
 
     @Override
     public void clear() {
-        throw new NotYetImplementedException();
+        this.size = 0;
+        this.front = null;
+        this.back = null;
     }
 }
