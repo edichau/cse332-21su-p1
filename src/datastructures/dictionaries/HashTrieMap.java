@@ -38,17 +38,65 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
     @Override
     public V insert(K key, V value) {
-        throw new NotYetImplementedException();
+        HashTrieNode currNode = (HashTrieNode) this.root;
+        Iterator<A> keyItr = key.iterator();
+        while(keyItr.hasNext()) {
+            A singleChar = keyItr.next();
+            if(!keyItr.hasNext()) { //last character in key so we want to put or replace the value in node
+                if(!currNode.pointers.containsKey(singleChar)) { //current node doesnt contain char so we add with value
+                    currNode.pointers.put(singleChar, new HashTrieNode(value));
+                    return null;
+                } else { //replace value and return the previous value
+                    V prevKey = currNode.pointers.get(singleChar).value;
+                    currNode.pointers.get(singleChar).value = value;
+                    return prevKey;
+                }
+            } else { //middle of key
+                if(!currNode.pointers.containsKey(singleChar)) { //if there is no pointer to current char we add it
+                    currNode.pointers.put(singleChar, new HashTrieNode());
+                }
+                currNode = currNode.pointers.get(singleChar);
+            }
+        }
+        return null;
     }
 
     @Override
     public V find(K key) {
-        throw new NotYetImplementedException();
+        if(key == null) { throw new IllegalArgumentException(); }
+
+        HashTrieNode currNode = (HashTrieNode) this.root;
+        Iterator<A> keyItr = key.iterator();
+        V val = null;
+        if(!keyItr.hasNext()) { //key is empty string "" so we return the value of root
+            val = currNode.value;
+        }
+        while(keyItr.hasNext()) {
+            A singleChar = keyItr.next();
+            if(!currNode.pointers.containsKey(singleChar)) { return null; } //partial key prefix not in map
+            if(!keyItr.hasNext()) { //end of key
+                val = currNode.pointers.get(singleChar).value;
+            }
+                currNode = currNode.pointers.get(singleChar);
+        }
+        return val;
     }
 
     @Override
     public boolean findPrefix(K key) {
-        throw new NotYetImplementedException();
+        if(key == null) {
+            throw new IllegalArgumentException();
+        }
+        HashTrieNode currNode = (HashTrieNode) this.root;
+        Iterator<A> keyItr = key.iterator();
+        while(keyItr.hasNext()) {
+            A singleChar = keyItr.next();
+            if(!currNode.pointers.containsKey(singleChar)){
+                return false;
+            }
+            currNode = currNode.pointers.get(singleChar);
+        }
+        return true;
     }
 
     @Override
