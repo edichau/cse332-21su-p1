@@ -3,49 +3,84 @@ package datastructures.worklists;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
+import java.util.NoSuchElementException;
+
 /**
  * See cse332/interfaces/worklists/FixedSizeFIFOWorkList.java
  * for method specifications.
  */
 public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
+    private int start;
+    private int size;
+    private E[] elements;
+
+    @SuppressWarnings("unchecked")
     public CircularArrayFIFOQueue(int capacity) {
         super(capacity);
-        throw new NotYetImplementedException();
+        // casts array to generic, new Comparable[N] creates an array with N elements which can hold Comparable or any subtype of Comparable.
+        // No Comparable is created, just an array.
+        this.elements = (E[]) new Comparable[capacity];
+        this.size = 0;
+        this.start = 0;
     }
 
     @Override
     public void add(E work) {
-        throw new NotYetImplementedException();
+        if (this.isFull()){
+            throw new IllegalStateException();
+        } else {
+            elements[(start + size) % elements.length] = work;
+            size++;
+        }
     }
 
     @Override
     public E peek() {
-        throw new NotYetImplementedException();
+        return peek(0);
     }
     
     @Override
     public E peek(int i) {
-        throw new NotYetImplementedException();
+        if (!hasWork()) {
+            throw new NoSuchElementException();
+        }
+        if (i < 0 || i >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        return this.elements[(start + i) % elements.length];
     }
     
     @Override
     public E next() {
-        throw new NotYetImplementedException();
+        if (!this.hasWork()) {
+            throw new NoSuchElementException();
+        }
+        int prevStart = start;
+        start = (prevStart + 1) % elements.length;
+        size--;
+        return this.elements[prevStart];
     }
     
     @Override
     public void update(int i, E value) {
-        throw new NotYetImplementedException();
+        if (!hasWork()) {
+            throw new NoSuchElementException();
+        }
+        if (i < 0 || i >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        elements[(start + i) % elements.length] = value;
     }
     
     @Override
     public int size() {
-        throw new NotYetImplementedException();
+        return this.size;
     }
     
     @Override
     public void clear() {
-        throw new NotYetImplementedException();
+        this.size = 0;
+        this.start = 0;
     }
 
     @Override
