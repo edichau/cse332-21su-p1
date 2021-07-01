@@ -1,7 +1,7 @@
 package cse332.jazzlib;
 
 import cse332.interfaces.worklists.FIFOWorkList;
-import datastructures.SuffixTrie;
+import cse332.interfaces.trie.SuffixTrie;
 
 
 /**
