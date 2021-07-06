@@ -37,6 +37,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V insert(K key, V value) {
         HashTrieNode currNode = (HashTrieNode) this.root;
         Iterator<A> keyItr = key.iterator();
@@ -62,6 +63,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V find(K key) {
         if(key == null) { throw new IllegalArgumentException(); }
 
@@ -83,14 +85,13 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean findPrefix(K key) {
         if(key == null) { throw new IllegalArgumentException(); }
 
         HashTrieNode currNode = (HashTrieNode) this.root;
-        Iterator<A> keyItr = key.iterator();
-        while(keyItr.hasNext()) {
-            A singleChar = keyItr.next();
-            if(!currNode.pointers.containsKey(singleChar)){
+        for (A singleChar : key) {
+            if (!currNode.pointers.containsKey(singleChar)) {
                 return false;
             }
             currNode = currNode.pointers.get(singleChar);
@@ -100,11 +101,18 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
     @Override
     public void delete(K key) {
-        throw new NotYetImplementedException();
+        if(key == null) {
+            throw new IllegalArgumentException();
+        }
+        else {
+
+        }
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void clear() {
-        throw new NotYetImplementedException();
+        ((HashTrieNode)this.root).pointers.clear();
+        size = 0;
     }
 }
