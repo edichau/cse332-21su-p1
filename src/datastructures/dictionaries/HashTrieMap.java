@@ -102,7 +102,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     @Override
     @SuppressWarnings("unchecked")
     public void delete(K key) {
-        if(key == null) { throw new IllegalArgumentException(); }
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
 
         HashTrieNode currNode = (HashTrieNode) this.root;
         Iterator<A> keyItr = key.iterator();
@@ -111,28 +113,33 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         A nodeCharRemove = null; //remove this char from pointers
         A currChar = null;
 
-        if(keyItr.hasNext()) { //initialize removeNode and removeChar to first letter else key not in Trie
+        if (keyItr.hasNext()) { //initialize removeNode and removeChar to first letter else key not in Trie
             currChar = keyItr.next();
             nodeCharRemove = currChar;
-            if(!currNode.pointers.containsKey(currChar)) {
+            if (!currNode.pointers.containsKey(currChar)) {
                 return;
             } else {
                 currNode = currNode.pointers.get(currChar);
             }
         }
+        boolean updateCharRemove = false;
 
         while (keyItr.hasNext()) {
             currChar = keyItr.next();
-            if(currNode.pointers.containsKey(currChar)) {
-                if(keyItr.hasNext()) { //not end of key
+            if (currNode.pointers.containsKey(currChar)) {
+                if(updateCharRemove) {
+                    nodeCharRemove = currChar;
+                    removeNode = currNode;
+                    updateCharRemove = false;
+                }
+                if (keyItr.hasNext()) { //not end of key
                     if (currNode.pointers.get(currChar).value != null) { //check if key contains prefix within it
-                        removeNode= currNode;
-                        nodeCharRemove= currChar;
+                        updateCharRemove = true;
                     }
                 }
-                if(currNode.pointers.keySet().size() > 1) { //this node is a char in other prefix
-                    removeNode= currNode;
-                    nodeCharRemove= currChar;
+                if ((currNode.pointers.size() - 1) > 0) { //this node is a char in other prefix
+                    removeNode = currNode;
+                    nodeCharRemove = currChar;
                 }
                 currNode = currNode.pointers.get(currChar);
 
@@ -150,10 +157,10 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
 
 
-    @Override
+
+        @Override
     @SuppressWarnings("unchecked")
     public void clear() {
         ((HashTrieNode)this.root).pointers.clear();
-        size = 0;
     }
 }
