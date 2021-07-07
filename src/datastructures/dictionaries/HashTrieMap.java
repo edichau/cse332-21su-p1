@@ -37,6 +37,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V insert(K key, V value) {
         HashTrieNode currNode = (HashTrieNode) this.root;
         Iterator<A> keyItr = key.iterator();
@@ -62,6 +63,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V find(K key) {
         if(key == null) { throw new IllegalArgumentException(); }
 
@@ -83,14 +85,13 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean findPrefix(K key) {
         if(key == null) { throw new IllegalArgumentException(); }
 
         HashTrieNode currNode = (HashTrieNode) this.root;
-        Iterator<A> keyItr = key.iterator();
-        while(keyItr.hasNext()) {
-            A singleChar = keyItr.next();
-            if(!currNode.pointers.containsKey(singleChar)){
+        for (A singleChar : key) {
+            if (!currNode.pointers.containsKey(singleChar)) {
                 return false;
             }
             currNode = currNode.pointers.get(singleChar);
@@ -100,55 +101,18 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
     @Override
     public void delete(K key) {
-        if(key == null) { throw new IllegalArgumentException(); }
-
-        HashTrieNode currNode = (HashTrieNode) this.root;
-        Iterator<A> keyItr = key.iterator();
-
-        HashTrieNode removeNode = currNode; //remove char from this node
-        A nodeCharRemove = null; //remove this char from pointers
-        A currChar = null;
-
-        if(keyItr.hasNext()) { //initialize removeNode and removeChar to first letter else key not in Trie
-            currChar = keyItr.next();
-            nodeCharRemove = currChar;
-            if(!currNode.pointers.containsKey(currChar)) {
-                return;
-            } else {
-                currNode = currNode.pointers.get(currChar);
-            }
+        if(key == null) {
+            throw new IllegalArgumentException();
         }
+        else {
 
-        while (keyItr.hasNext()) {
-            currChar = keyItr.next();
-            if(currNode.pointers.containsKey(currChar)) {
-                if(keyItr.hasNext()) { //not end of key
-                    if (currNode.pointers.get(currChar).value != null) { //check if key contains prefix within it
-                        removeNode= currNode;
-                        nodeCharRemove= currChar;
-                    }
-                }
-                if(currNode.pointers.keySet().size() > 1) { //this node is a char in other prefix
-                    removeNode= currNode;
-                    nodeCharRemove= currChar;
-                }
-                currNode = currNode.pointers.get(currChar);
-
-            } else { //doesnt contain key
-                return;
-            }
-        }
-
-        if (currNode.pointers.get(currChar) != null) { //not a leaf so we dont want to remove entire prefix. We just remove value stored.
-            currNode.pointers.get(currChar).value = null;
-        } else { //node is a leaf
-            removeNode.pointers.remove(nodeCharRemove);
         }
     }
 
-
     @Override
+    @SuppressWarnings("unchecked")
     public void clear() {
-        throw new NotYetImplementedException();
+        ((HashTrieNode)this.root).pointers.clear();
+        size = 0;
     }
 }
