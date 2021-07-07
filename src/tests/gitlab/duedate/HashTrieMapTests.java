@@ -39,9 +39,14 @@ public class HashTrieMapTests {
 
         STUDENT.delete(a("I don't exist"));
         STUDENT.delete(a("dreamer"));
-        assertFalse(!containsAllPaths(STUDENT, "dog", "doggy", "cat") &&
-                !containsAllPrefixes(STUDENT, "dreamer", "dreame", "dream", "drea", "dre", "dr") &&
-                !STUDENT.findPrefix(a("d")));
+
+        assertTrue(containsAllPaths(STUDENT, "dog", "doggy", "cat"));
+        String[] dreamerSubstrs = {"dreamer", "dreame", "dream", "drea", "dre", "dr"};
+
+        for (String dreamerSubstr : dreamerSubstrs) {
+            assertFalse(containsAllPrefixes(STUDENT, dreamerSubstr));
+        }
+        assertTrue(STUDENT.findPrefix(a("d")));
 
         STUDENT.delete(a("dog"));
         assertTrue(containsAllPaths(STUDENT, "doggy", "cat"));
