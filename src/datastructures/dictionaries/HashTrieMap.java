@@ -39,13 +39,22 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     @Override
     @SuppressWarnings("unchecked")
     public V insert(K key, V value) {
+        if(key==null || value==null) { throw new IllegalArgumentException(); }
+
         HashTrieNode currNode = (HashTrieNode) this.root;
         Iterator<A> keyItr = key.iterator();
+        if(!keyItr.hasNext()) {
+            V rootVal = currNode.value;
+            currNode.value = value;
+            return rootVal;
+        }
+
         while(keyItr.hasNext()) {
             A singleChar = keyItr.next();
             if(!keyItr.hasNext()) { //last character in key so we want to put or replace the value in node
                 if(!currNode.pointers.containsKey(singleChar)) { //current node doesnt contain char so we add with value
                     currNode.pointers.put(singleChar, new HashTrieNode(value));
+                    size++;
                     return null;
                 } else { //replace value and return the previous value
                     V prevKey = currNode.pointers.get(singleChar).value;
@@ -105,54 +114,43 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         if (key == null) {
             throw new IllegalArgumentException();
         }
+        if(this.root == null) {
+            return;
+        }
 
         HashTrieNode currNode = (HashTrieNode) this.root;
+
         Iterator<A> keyItr = key.iterator();
 
         HashTrieNode removeNode = currNode; //remove char from this node
         A nodeCharRemove = null; //remove this char from pointers
-        A currChar = null;
 
-        if (keyItr.hasNext()) { //initialize removeNode and removeChar to first letter else key not in Trie
-            currChar = keyItr.next();
-            nodeCharRemove = currChar;
-            if (!currNode.pointers.containsKey(currChar)) {
+        while(keyItr.hasNext()) {
+            A nextChar = keyItr.next();
+            if(nodeCharRemove == null) {
+                nodeCharRemove = nextChar;
+            }
+            if(currNode.pointers.size() == 0) {
                 return;
+            } else if(currNode.pointers.containsKey(nextChar)) {
+                if(currNode.value != null || (currNode.pointers.size() -1) > 0) {
+                    removeNode = currNode;
+                    nodeCharRemove = nextChar;
+                }
             } else {
-                currNode = currNode.pointers.get(currChar);
-            }
-        }
-        boolean updateCharRemove = false;
-
-        while (keyItr.hasNext()) {
-            currChar = keyItr.next();
-            if (currNode.pointers.containsKey(currChar)) {
-                if(updateCharRemove) {
-                    nodeCharRemove = currChar;
-                    removeNode = currNode;
-                    updateCharRemove = false;
-                }
-                if (keyItr.hasNext()) { //not end of key
-                    if (currNode.pointers.get(currChar).value != null) { //check if key contains prefix within it
-                        updateCharRemove = true;
-                    }
-                }
-                if ((currNode.pointers.size() - 1) > 0) { //this node is a char in other prefix
-                    removeNode = currNode;
-                    nodeCharRemove = currChar;
-                }
-                currNode = currNode.pointers.get(currChar);
-
-            } else { //doesnt contain key
                 return;
             }
+            currNode = currNode.pointers.get(nextChar);
         }
 
-        if (currNode.pointers.get(currChar) != null) { //not a leaf so we dont want to remove entire prefix. We just remove value stored.
-            currNode.pointers.get(currChar).value = null;
-        } else { //node is a leaf
+        if(currNode.pointers.size() > 0) {
+            if(currNode != root) {
+                currNode.value = null;
+            }
+        } else {
             removeNode.pointers.remove(nodeCharRemove);
         }
+        size--;
     }
 
 
