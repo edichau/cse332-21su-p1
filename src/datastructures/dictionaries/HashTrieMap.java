@@ -128,6 +128,14 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         HashTrieNode removeNode = currNode; //remove char from this node
         A nodeCharRemove = null; //remove this char from pointers
 
+        if(!keyItr.hasNext()) {
+            if(currNode.value != null) {
+                currNode.value = null;
+                size--;
+                return;
+            }
+        }
+
         while(keyItr.hasNext()) {
             A nextChar = keyItr.next();
             if(nodeCharRemove == null) {
