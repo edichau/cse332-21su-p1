@@ -43,17 +43,18 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
         HashTrieNode currNode = (HashTrieNode) this.root;
         Iterator<A> keyItr = key.iterator();
+
         if(!keyItr.hasNext()) {
-            V rootVal = currNode.value;
+            V prevVal = currNode.value;
+            if(prevVal == null) { size++; }
             currNode.value = value;
-            if(rootVal == null) {
-                size++;
-            }
-            return rootVal;
+            return prevVal;
         }
+
 
         while(keyItr.hasNext()) {
             A singleChar = keyItr.next();
+
             if(!keyItr.hasNext()) { //last character in key so we want to put or replace the value in node
                 if(!currNode.pointers.containsKey(singleChar)) { //current node doesnt contain char so we add with value
                     currNode.pointers.put(singleChar, new HashTrieNode(value));
@@ -61,6 +62,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
                     return null;
                 } else { //replace value and return the previous value
                     V prevKey = currNode.pointers.get(singleChar).value;
+                    if(prevKey == null) { size++; }
                     currNode.pointers.get(singleChar).value = value;
                     return prevKey;
                 }
