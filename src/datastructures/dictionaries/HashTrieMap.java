@@ -34,7 +34,6 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     public HashTrieMap(Class<K> KClass) {
         super(KClass);
         this.root = new HashTrieNode();
-        size = 0;
     }
 
     @Override
@@ -129,40 +128,29 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         HashTrieNode removeNode = currNode; //remove char from this node
         A nodeCharRemove = null; //remove this char from pointers
 
-        if(!keyItr.hasNext()) {
-            if(currNode.value != null) {
-                currNode.value = null;
-                size--;
-                return;
-            }
-        }
-
         while(keyItr.hasNext()) {
             A nextChar = keyItr.next();
             if(nodeCharRemove == null) {
                 nodeCharRemove = nextChar;
             }
-            if(currNode.pointers.size() == 0) {
+            if(currNode.pointers.size() == 0 || !currNode.pointers.containsKey(nextChar)) {
                 return;
-            } else if(currNode.pointers.containsKey(nextChar)) {
-                if(currNode.value != null || (currNode.pointers.size() -1) > 0) {
-                    removeNode = currNode;
-                    nodeCharRemove = nextChar;
-                }
-            } else {
-                return;
+            }
+            if(currNode.value != null || (currNode.pointers.size() -1) > 0) {
+                removeNode = currNode;
+                nodeCharRemove = nextChar;
             }
             currNode = currNode.pointers.get(nextChar);
         }
 
         if(currNode.pointers.size() > 0) {
-            if(currNode != root) {
-                currNode.value = null;
-            }
+            if(currNode.value != null) { size--; }
+            currNode.value = null;
         } else {
+            if(removeNode.pointers.get(nodeCharRemove) != null) { size--; }
             removeNode.pointers.remove(nodeCharRemove);
         }
-        size--;
+
     }
 
 
