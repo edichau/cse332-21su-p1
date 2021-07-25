@@ -46,6 +46,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         if(!keyItr.hasNext()) {
             V rootVal = currNode.value;
             currNode.value = value;
+            if(rootVal == null) {
+                size++;
+            }
             return rootVal;
         }
 
